@@ -19,6 +19,8 @@ require 'capybara/rspec'
 require 'selenium-webdriver'
 require 'logger'
 require 'helper_functions'
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 RSpec.configure do |config|
   config.order = 'default' # Run specs in default order
@@ -31,6 +33,10 @@ RSpec.configure do |config|
       page.save_screenshot
     end
   end
+end
+
+Capybara.add_selector(:class_starts) do
+  css {|locator| "[class^=\"#{locator}\"]"}
 end
 
 Capybara.configure do |config|
