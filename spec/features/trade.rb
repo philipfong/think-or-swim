@@ -15,28 +15,29 @@ feature "Trade on etrade" do
       last_price = base_price
       while 1
         new_price = get_price
-        # Log.info 'New price is now %s' % new_price
-        # diff = last_price - new_price
-        # if diff > 0
-        #   Log.info 'Up %s since last check' % diff
-        # elsif diff < 0
-        #   Log.info 'Down %s since last check' % diff
-        # else
-        #   Log.info 'No price change since last check'
-        # end
-        # base_difference = base_price - new_price
-        # Log.info 'Difference from cost basis is %s' % base_difference
         if last_price != new_price
-          Log.info 'Last price was %s' % last_price
+          diff = (last_price - new_price).round(4)
+          diff2 = (last_price - base_price).round(4)
+          if diff > 0
+            Log.info 'Price increase of %s' % diff
+            Log.info 'Price difference from cost basis is %s' % diff2
+          else
+            Log.info 'Price decrease of %s' % diff
+            Log.info'Price difference from cost basis is %s' % diff2
+          end
         end
         last_price = new_price
+        buy_or_sell
       end
-      sleep 0.250
     end
   end
 
 end
 
 def get_price
-  find(:class_starts, 'QuoteBar---changes').all('li')[1].text
+  find(:class_starts, 'QuoteBar---changes').all('li')[1].text.chomp.to_f
+end
+
+def buy_or_sell
+
 end
